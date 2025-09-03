@@ -22,7 +22,6 @@ cpu_stats=$(top -bn1 | grep "Cpu(s)" | awk '{
 echo "$cpu_stats"
 echo ""
 
-
 echo "+++++++++ TOP PROCESSES CPU +++++++++"
 ps -eo pcpu,pid,user,comm --sort=-%cpu | head -n 6
 
