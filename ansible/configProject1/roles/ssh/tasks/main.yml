@@ -1,4 +1,0 @@
-- name: Add pub key to server
-  authorized_key:
-    user: vin
-    key: "{{ lookup('file', '/home/vin/.ssh/id_ed25519.pub') }}"
