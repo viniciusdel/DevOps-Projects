@@ -1,0 +1,28 @@
+- name: Update all packages using yum
+  yum:
+    name: "*"
+    state: latest
+
+- name: Install useful utilities using yum
+  yum:
+    name: 
+      - vim
+      - git
+      - curl
+      - firewalld
+    state: present
+    # on EC2 instances using Amazon distro, curl-minimal will conflict with 
+    # curl so we add allowerasing to let it delete it. 
+    allowerasing: true
+
+- name: Enable and start firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Ensure vin user exists
+  user:
+    name: vin
+    state: present
+    shell: /bin/bash

@@ -1,0 +1,18 @@
+# This book only calls on other role files in order.
+
+- hosts: EC2
+  become: yes
+
+  roles:
+  - role: base
+    tags: base
+  
+  - role: ngix
+    tags: ngix
+
+  - role: app
+    tags: app
+
+  - role: ssh
+    tags: ssh
+
