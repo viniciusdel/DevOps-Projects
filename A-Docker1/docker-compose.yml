@@ -1,0 +1,23 @@
+services:
+  app:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+  
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+  
+  mongo:
+    image: mongo:latest
+    volumes: 
+    - mongo-data:/data/db
+  
+
+volumes:
+  mongo-data:

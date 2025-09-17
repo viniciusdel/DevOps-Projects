@@ -1,0 +1,4 @@
+## Current Problem:
+
+The API does not properly contact the frontend and vice versa because react runs on the browser.
+It needs a reverse proxy to properly communicate. Idk how to do that yet. 
