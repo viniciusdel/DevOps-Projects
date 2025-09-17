@@ -1,23 +1,36 @@
 services:
   app:
     build: ./frontend
-    ports:
-      - "8080:80"
     depends_on:
       - api
   
   api:
     build: ./api
+    environment:
+    - REDIS_URL=redis://cache:6379
     ports:
       - "3000:3000"
     depends_on:
       - mongo
+  
+  cache:
+    image: redis:latest
+    volumes:
+    - redis-data:/data
   
   mongo:
     image: mongo:latest
     volumes: 
     - mongo-data:/data/db
   
+  proxy:
+    build: ./proxy
+    ports:
+      - "8080:80"
+    depends_on:
+      - app
+      - api
 
 volumes:
   mongo-data:
+  redis-data:

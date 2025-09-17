@@ -5,13 +5,13 @@ function App() {
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    fetch('http://api:3000/todos')
+    fetch('/api/todos')
       .then(res => res.json())
       .then(setTodos);
   }, []);
 
   const addTodo = async () => {
-    const res = await fetch('http://api:3000/todos', {
+    const res = await fetch('/api/todos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ title, completed: false })
