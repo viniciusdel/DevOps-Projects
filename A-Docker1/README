@@ -13,202 +13,36 @@ A full-stack todo application built with React frontend, Node.js API, MongoDB da
 ## Prerequisites
 
 - Docker and Docker Compose
-- Kubernetes cluster (for K8s deployment)
+- Minikube (for Kubernetes deployment)
 - kubectl (for Kubernetes deployment)
 
 ## Running with Docker Compose
-
-### Quick Start
 
 ```bash
 # Build and start all services
 docker-compose up --build
 
-# Start in detached mode
-docker-compose up -d --build
-
 # Stop all services
 docker-compose down
-
-# Stop and remove volumes (clean slate)
-docker-compose down -v
-```
-
-### Individual Service Commands
-
-```bash
-# Build specific service
-docker-compose build api
-docker-compose build frontend
-docker-compose build proxy
-
-# Start specific service
-docker-compose up api
-docker-compose up frontend
-docker-compose up proxy
-
-# View logs
-docker-compose logs api
-docker-compose logs frontend
-docker-compose logs -f  # Follow all logs
-```
-
-### Manual Docker Commands
-
-If you prefer to run containers individually:
-
-```bash
-# Create network
-docker network create todo-network
-
-# Start MongoDB
-docker run -d --name mongo --network todo-network \
-  -v mongo-data:/data/db mongo:latest
-
-# Start Redis
-docker run -d --name redis --network todo-network \
-  -v redis-data:/data redis:latest
-
-# Build and run API
-docker build -t todo-api ./api
-docker run -d --name api --network todo-network \
-  -p 3000:3000 \
-  -e REDIS_URL=redis://redis:6379 \
-  todo-api
-
-# Build and run Frontend
-docker build -t todo-frontend ./frontend
-docker run -d --name frontend --network todo-network \
-  todo-frontend
-
-# Build and run Proxy
-docker build -t todo-proxy ./proxy
-docker run -d --name proxy --network todo-network \
-  -p 8080:80 \
-  todo-proxy
 ```
 
 ## Running with Kubernetes
 
-### Prerequisites
-
-**Important**: Images must be built before deploying to Kubernetes, as the YAML files reference local images with `imagePullPolicy: Never`.
-
 ```bash
-# Build all images first
-docker-compose build
-```
+# 1. Start Minikube
+minikube start
 
-### Quick Start
-
-```bash
-# 1. Build images (required step)
+# 2. Build images (required)
 docker-compose build
 
-# 2. Deploy entire application
+# 3. Deploy application
 kubectl apply -f k8s/
 
-# 3. Check deployment status
+# 4. Check status
 kubectl get pods
-kubectl get services
-kubectl get deployments
-```
-
-### Step-by-Step Deployment
-
-```bash
-# 1. Create persistent volumes first
-kubectl apply -f k8s/mongo-data-persistentvolumeclaim.yaml
-kubectl apply -f k8s/redis-data-persistentvolumeclaim.yaml
-
-# 2. Deploy databases
-kubectl apply -f k8s/mongo-deployment.yaml
-kubectl apply -f k8s/cache-deployment.yaml
-
-# 3. Deploy application services
-kubectl apply -f k8s/api-deployment.yaml
-kubectl apply -f k8s/app-deployment.yaml
-kubectl apply -f k8s/proxy-deployment.yaml
-
-# 4. Create services
-kubectl apply -f k8s/api-service.yaml
-kubectl apply -f k8s/app-service.yaml
-kubectl apply -f k8s/proxy-service.yaml
-```
-
-### Kubernetes Management Commands
-
-```bash
-# View all resources
-kubectl get all
-
-# Check pod logs
-kubectl logs deployment/api-deployment
-kubectl logs deployment/app-deployment
-kubectl logs deployment/proxy-deployment
-
-# Scale deployments
-kubectl scale deployment api-deployment --replicas=3
-kubectl scale deployment app-deployment --replicas=2
-
-# Delete entire application
-kubectl delete -f k8s/
-
-# Port forward for local access (if needed)
-kubectl port-forward service/proxy-service 8080:80
 ```
 
 ## Access the Application
 
-### Docker Compose
-- Application: http://localhost:8080
-- API: http://localhost:3000
-
-### Kubernetes
-- Application: Access via proxy service (port depends on your cluster setup)
-- Use `kubectl get services` to find the external IP/port
-
-## Troubleshooting
-
-### Docker
-```bash
-# View container logs
-docker-compose logs [service-name]
-
-# Restart specific service
-docker-compose restart [service-name]
-
-# Rebuild without cache
-docker-compose build --no-cache [service-name]
-```
-
-### Kubernetes
-```bash
-# Check pod status
-kubectl describe pod [pod-name]
-
-# View events
-kubectl get events --sort-by=.metadata.creationTimestamp
-
-# Check resource usage
-kubectl top pods
-kubectl top nodes
-```
-
-## Development
-
-### Local Development Setup
-1. Start databases with Docker Compose: `docker-compose up mongo redis -d`
-2. Run API locally: `cd api && npm install && npm start`
-3. Run frontend locally: `cd frontend && npm install && npm start`
-
-### Building Images
-```bash
-# Build all images
-docker-compose build
-
-# Build specific image
-docker build -t todo-api ./api
-docker build -t todo-frontend ./frontend
-docker build -t todo-proxy ./proxy
-```
+- **Docker Compose**: http://localhost:8080
+- **Kubernetes**: Use `kubectl get services` to find the proxy service details
