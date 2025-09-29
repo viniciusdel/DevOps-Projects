@@ -21,7 +21,7 @@ spec:
         io.kompose.service: proxy
     spec:
       containers:
-        - image: a-docker1_proxy
+        - image: a-docker1-proxy
           imagePullPolicy: Never
           name: proxy
           ports:

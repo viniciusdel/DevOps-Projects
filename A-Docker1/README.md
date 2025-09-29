@@ -34,6 +34,8 @@ minikube start
 
 # 2. Build images (required)
 docker-compose build
+or
+docker compose build
 
 # 3. Deploy application
 kubectl apply -f k8s/

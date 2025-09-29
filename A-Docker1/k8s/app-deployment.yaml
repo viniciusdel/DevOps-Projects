@@ -21,7 +21,7 @@ spec:
         io.kompose.service: app
     spec:
       containers:
-        - image: a-docker1_app
+        - image: a-docker1-app
           imagePullPolicy: Never
           name: app
           resources:

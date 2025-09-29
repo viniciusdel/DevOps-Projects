@@ -24,7 +24,7 @@ spec:
         - env:
             - name: REDIS_URL
               value: redis://cache:6379
-          image: a-docker1_api
+          image: a-docker1-api
           imagePullPolicy: Never
           name: api
           ports:
